@@ -5,5 +5,7 @@ import { SessionProvider } from "next-auth/react";
  * NextAuthのSessionProviderでアプリ全体をラップするプロバイダコンポーネント
  */
 export const NextAuthProvider = ({ children }: { children: React.ReactNode }) => {
-  return <SessionProvider>{children}</SessionProvider>;
+  return <SessionProvider basePath="/front/api/auth">
+  {children}
+</SessionProvider>;
 };

@@ -6,6 +6,12 @@ import { IProductCategoryRepository } from "../domain/repository/IProductCategor
 import { ProductCategoryRepository } from "../infrastructure/ProductCategoryRepository";
 import { IUserRepository } from "../domain/repository/IUserRepository";
 import { UserRepository } from "../infrastructure/UserRepository";
+import { ISearchProductService } from "../service/ISearchProductService";
+import { SearchProductService } from "../service/impl/SearchProductService";
+import { IRegisterProductService } from "../service/IRegisterProductService";
+import { RegisterProductService } from "../service/impl/RegisterProductService";
+import { IRegisterUserService } from "../service/IRegisterUserService";
+import { RegisterUserService } from "../service/impl/RegisterUserService";
 /**
  * DIコンテナの初期化と依存関係の登録
  */
@@ -14,3 +20,8 @@ const container = new Container();
 container.bind<IUserRepository>(TYPES.IUserRepository).to(UserRepository);
 container.bind<IProductRepository>(TYPES.IProductRepository).to(ProductRepository);
 container.bind<IProductCategoryRepository>(TYPES.IProductCategoryRepository).to(ProductCategoryRepository);
+// サービス(ユースケース)層
+container.bind<ISearchProductService>(TYPES.ISearchProductService).to(SearchProductService);
+container.bind<IRegisterProductService>(TYPES.IRegisterProductService).to(RegisterProductService);
+container.bind<IRegisterUserService>(TYPES.IRegisterUserService).to(RegisterUserService);
+export { container };

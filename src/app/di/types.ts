@@ -8,4 +8,7 @@ export const TYPES = {
     IUserRepository: Symbol.for("IUserRepository"),
 
     // サービス(ユースケース)層
+    ISearchProductService: Symbol.for("ISearchProductService"),
+    IRegisterProductService: Symbol.for("IRegisterProductService"),
+    IRegisterUserService: Symbol.for("IRegisterUserService"),
 };

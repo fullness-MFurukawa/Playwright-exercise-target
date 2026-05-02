@@ -3,7 +3,7 @@ import { ProductCategory } from "../domain/models/ProductCategory";
 import { ProductRegistration } from "../domain/models/ProductRegistration";
 
 /**
- * 商品登録サービスのインターフェース
+ * 商品登録サービスのインターフェイス
  */
 export interface IRegisterProductService {
     /**

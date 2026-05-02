@@ -51,7 +51,6 @@ export class ProductRepository implements IProductRepository {
     }
 
     /**
-     * 演習8-9 リポジトリの実装を作成する
      * 商品の重複を検証する
      * @param name 検証する商品名
      */
@@ -75,7 +74,6 @@ export class ProductRepository implements IProductRepository {
         }
     }
     /**
-     * 演習8-9 リポジトリの実装を作成する
      * 商品を登録する
      * @param product 登録する商品
      * @returns 登録された商品（非同期）

@@ -4,7 +4,7 @@ import { getSession } from "next-auth/react";
 import { User } from "../domain/models/User";
 
 /**
- * ユーザーリポジトリ実装クラス
+ * IUserRepositoryインターフェイス実装
  */
 @injectable() // DIコンテナの管理対象とするためのデコレータ
 export class UserRepository implements IUserRepository {

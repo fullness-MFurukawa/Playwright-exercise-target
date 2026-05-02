@@ -14,7 +14,20 @@
 ```bash
 npx create-next-app@latest exercise-target --typescript --eslint --tailwind --app --src-dir --use-npm --yes
 ```
+### inversifyとreflect-metadataのインストール
+```bash
+pnpm add inversify reflect-metadata
+```
 ### shadcn/uiコンポーネント
 ```bash
 npx shadcn@latest add button select input label card
+npx shadcn@latest add table navigation-menu
+```
+### VitestとReact Testing Library(RTL)のインストール
+```bash
+npm install --save-dev vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event
+```
+### NextAuthのインストール
+```bash
+npm install next-auth
 ```

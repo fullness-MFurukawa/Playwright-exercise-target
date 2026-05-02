@@ -23,7 +23,8 @@ export class ProductRepository implements IProductRepository {
         const params = new URLSearchParams({ keyword: keyword });
 
         // API呼び出し(next.config.tsで設定したプロキシ経由)
-        const response = await fetch(`/proxy-api/products/search?${params.toString()}`, {
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "/api";
+        const response = await fetch(`${apiBaseUrl}/products/search?${params.toString()}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,

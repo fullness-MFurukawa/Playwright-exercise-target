@@ -3,16 +3,27 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   basePath: '/front', // フロントエンドのパス
+  
   async redirects() {
     return [
       {
         source: '/',
-        // 転送先：http://localhost:3000/front
         destination: '/front',
-        // 【重要】これを false にしないと、/front/がsourceになってしまう
         basePath: false, 
-        // ブラウザにキャッシュさせる永続的なリダイレクト（308）
         permanent: true,
+      },
+    ];
+  },
+  
+  async rewrites() {
+    return [
+      {
+        // フロントエンドから /proxy-api/ で始まる通信が来たら...
+        source: '/proxy-api/:path*',
+        // 裏側でこっそりAzureのAPIへ転送する！
+        destination: 'http://74.226.194.15/api/:path*',
+        // 💡 追加：basePath（/front）を自動付与しないようにする
+        basePath: false,
       },
     ];
   },

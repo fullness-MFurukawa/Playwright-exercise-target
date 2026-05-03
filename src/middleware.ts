@@ -1,19 +1,27 @@
-import withAuth from "next-auth/middleware";
+import { withAuth } from "next-auth/middleware";
 
-/**
- * 商品管理系のすべてのページをガード対象とする
- * ユーザー登録画面も認証必須とするためガード対象とする
- */
-export default withAuth({
-  pages: {
-    // カスタムのログイン画面（例: app/login/page.tsx）のパスを指定
-    // basePathがあるので、実際のブラウザ上のURLは http://IP/front/login
-    signIn: "/login", 
+export default withAuth(
+  function middleware(req) {
+    // ミドルウェアがそのURLを検知したかを出力
+    console.log("🔥 [Middleware実行] アクセス先パス:", req.nextUrl.pathname);
   },
-});
+  {
+    callbacks: {
+      // ここで「アクセスを許可するか（true/false）」を明示的に判定します
+      authorized: ({ req, token }) => {
+        console.log("🔥 [Middleware判定] トークン(Cookie)の状態:", token ? "存在します（ログイン扱い）" : "空っぽです（未ログイン）");
+        
+        // トークンがあれば true (アクセス許可)、なければ false (ログイン画面へ強制送還)
+        return !!token;
+      },
+    },
+    pages: {
+      signIn: "/login",
+    },
+  }
+);
 
 export const config = {
-  // matcherには basePath (/front)を含めず、相対パスで
   matcher: [
     "/products/:path*",
     "/users/:path*"

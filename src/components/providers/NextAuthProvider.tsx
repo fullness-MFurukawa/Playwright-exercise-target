@@ -10,6 +10,7 @@ export const NextAuthProvider = ({ children }: { children: React.ReactNode }) =>
           refetchInterval={60} // 60秒ごとにセッションの状態を確認する
           refetchOnWindowFocus={true} // ウィンドウにフォーカスが戻った時(タブの切り替えなど)でも確認する
           >
+          
       {children}
      </SessionProvider>);
 };

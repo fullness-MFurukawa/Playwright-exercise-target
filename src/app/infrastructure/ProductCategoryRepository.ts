@@ -15,7 +15,9 @@ export class ProductCategoryRepository implements IProductCategoryRepository {
     async findAll(): Promise<ProductCategory[]> {
         const session = await getSession();
         const token = (session as any)?.user?.token;
-        const response = await fetch("/proxy-api/products/register/categories", {
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "/api";
+        `${apiBaseUrl}/products/register/categories}`
+        const response = await fetch(`${apiBaseUrl}/products/register/categories`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -36,7 +38,8 @@ export class ProductCategoryRepository implements IProductCategoryRepository {
     async findById(id: string): Promise<ProductCategory> {
         const session = await getSession();
         const token = (session as any)?.user?.token;
-        const response = await fetch(`/proxy-api/products/register/categories/${id}`, {
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "/api";
+        const response = await fetch(`${apiBaseUrl}/products/register/categories/${id}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,

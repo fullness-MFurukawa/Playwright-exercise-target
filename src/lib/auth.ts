@@ -33,7 +33,10 @@ export const authOptions: NextAuthOptions = {
       }
     }),
   ],
-
+  // 💡 [追加] セッションの戦略を明示し、maxAgeを指定しない
+  session: {
+    strategy: "jwt",
+  },
   // 💡 [追加] クッキーの設定を強制的に上書き
   // これを行わないと、/front 以外のパスでクッキーが認識されない場合があります
   cookies: {

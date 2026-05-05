@@ -56,7 +56,7 @@ export const Login = () => {
         
         {/* ユーザー名入力エリア */}
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
+          <label htmlFor="username-input" className="block text-sm font-medium text-foreground mb-2">
             ユーザー名またはメールアドレス
           </label>
           {/* onChangeイベントハンドラ:
@@ -65,6 +65,7 @@ export const Login = () => {
             ローカルState(username)を更新することで、Reactの制御されたコンポーネント(Controlled Component)としてUIと状態を同期する
           */}
           <Input 
+            id="username-input"
             type="text" 
             value={username} 
             onChange={(e) => setUsername(e.target.value)} 
@@ -76,11 +77,12 @@ export const Login = () => {
 
         {/* パスワード入力エリア */}
         <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
+          <label htmlFor="password-input" className="block text-sm font-medium text-foreground mb-2">
             パスワード
           </label>
           {/* 同様に、入力イベントを検知してpassword Stateを同期 */}
           <Input 
+            id="password-input"
             type="password" 
             value={password} 
             onChange={(e) => setPassword(e.target.value)} 

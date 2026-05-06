@@ -102,6 +102,10 @@ export const ProductUpdateContainer = () => {
                                     <p className="text-slate-400 font-bold text-[10px] uppercase">価格</p>
                                     <p className="font-semibold text-base">{product.price.toLocaleString()}円</p>
                                 </div>
+                                <div>
+                                    <p className="text-slate-400 font-bold text-[10px] uppercase">在庫数</p>
+                                    <p className="font-semibold text-base">{product.stock.stock}</p>
+                                </div>
                             </div>
                             <div className="pt-4 flex justify-end">
                                 <Button onClick={handleStartEdit} className="bg-blue-600 hover:bg-blue-700">

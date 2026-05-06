@@ -66,7 +66,7 @@ export const ProductRegister = () => {
                     <div className="space-y-2">
                         <Label htmlFor="categoryId">カテゴリ</Label>
                         <Select value={formData.categoryId} onValueChange={handleCategoryChange} required>
-                            <SelectTrigger>
+                            <SelectTrigger id="categoryId">
                                 <SelectValue placeholder="カテゴリを選択してください" />
                             </SelectTrigger>
                             <SelectContent>

@@ -12,6 +12,8 @@ import { IRegisterProductService } from "../service/IRegisterProductService";
 import { RegisterProductService } from "../service/impl/RegisterProductService";
 import { IRegisterUserService } from "../service/IRegisterUserService";
 import { RegisterUserService } from "../service/impl/RegisterUserService";
+import { IUpdateProductService } from "../service/IUpdateProductService";
+import { UpdateProductService } from "../service/impl/UpdateProductService";
 /**
  * DIコンテナの初期化と依存関係の登録
  */
@@ -24,4 +26,5 @@ container.bind<IProductCategoryRepository>(TYPES.IProductCategoryRepository).to(
 container.bind<ISearchProductService>(TYPES.ISearchProductService).to(SearchProductService);
 container.bind<IRegisterProductService>(TYPES.IRegisterProductService).to(RegisterProductService);
 container.bind<IRegisterUserService>(TYPES.IRegisterUserService).to(RegisterUserService);
+container.bind<IUpdateProductService>(TYPES.IUpdateProductService).to(UpdateProductService);
 export { container };

@@ -35,4 +35,14 @@ export class UpdateProductService implements IUpdateProductService {
     async updateProduct(product: ProductUpdate): Promise<Product> {
         return await this.productRepository.update(product);
     }
+
+    async validateProductName(name: string, excludeId?: string): Promise<void> {
+        if (excludeId) {
+            // excludeId が存在する場合（string型として確定）
+            await this.productRepository.existsByName(name, excludeId);
+        } else {
+            // excludeId が存在しない場合（引数1つのオーバーロードを呼び出す）
+            await this.productRepository.existsByName(name);
+        }
+    }
 }

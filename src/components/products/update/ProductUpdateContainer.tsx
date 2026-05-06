@@ -18,12 +18,14 @@ export const ProductUpdateContainer = () => {
         formData,
         isEditMode,
         error,
+        errors,
         isLoading,
         isSuccess,
         handleSearch,
         handleStartEdit,
         handleUpdateChange,
         handleUpdateSubmit,
+        handleNameBlur,
         resetAll
     } = UpdateProductHooks();
 
@@ -54,7 +56,7 @@ export const ProductUpdateContainer = () => {
                     <AlertCircle className="h-5 w-5 mt-0.5 flex-shrink-0 text-red-600" />
                     <div>
                         <p className="text-sm font-bold">エラーが発生しました</p>
-                        <p className="text-sm opacity-80">{error}</p>
+                        <p className="text-sm opacity-80 whitespace-pre-line">{error}</p>
                     </div>
                 </div>
             )}
@@ -112,9 +114,11 @@ export const ProductUpdateContainer = () => {
             ) : (
                 /* ステップ2：編集フォームビュー */
                 <form onSubmit={onUpdateSubmit} className="space-y-6 animate-in slide-in-from-right-4 duration-300">
+                    {/*
                     <div className="p-4 bg-slate-50 rounded-lg border border-slate-200 text-xs font-mono text-slate-500">
                         <span className="font-bold">Editing UUID:</span> {formData.productId}
                     </div>
+                    */}
 
                     <div className="space-y-2">
                         <Label htmlFor="name">商品名</Label>
@@ -123,6 +127,8 @@ export const ProductUpdateContainer = () => {
                             name="name"
                             value={formData.name}
                             onChange={handleUpdateChange}
+                            onBlur={handleNameBlur}
+                            className={errors.name ? "border-red-500" : ""}
                             required
                         />
                     </div>
@@ -156,7 +162,8 @@ export const ProductUpdateContainer = () => {
                         <Button type="button" variant="outline" onClick={resetAll} className="flex-1">
                             <Undo2 className="h-4 w-4 mr-2" /> キャンセル
                         </Button>
-                        <Button type="submit" className="flex-1 bg-green-600 hover:bg-green-700" disabled={isLoading}>
+                        <Button type="submit" className="flex-1 bg-green-600 hover:bg-green-700" 
+                            disabled={isLoading || Object.keys(errors).length > 0}>
                             {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : <Save className="h-4 w-4 mr-2" />}
                             変更を保存
                         </Button>

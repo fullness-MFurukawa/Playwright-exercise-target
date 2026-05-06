@@ -82,15 +82,21 @@ export class ProductRepository implements IProductRepository {
         return products;
     }
 
-    /**
-     * 商品の重複を検証する
-     * @param name 検証する商品名
-     */
-    async existsByName(name: string): Promise<void> {
+    // --- オーバーロード用シグネチャ ---
+    async existsByName(name: string): Promise<void>;
+    async existsByName(name: string, excludeId: string): Promise<void>;
+
+    async existsByName(name: string, excludeId?: string): Promise<void> {
         const session = await getSession();
         const token = (session as any)?.user?.token;
-        // キー名をproductNameに設定する
+
+        // クエリパラメータの設定
         const params = new URLSearchParams({ productName: name });
+
+        if (excludeId) {
+            params.append("excludeId", excludeId);
+        }
+
         const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "/api";
         const response = await fetch(`${apiBaseUrl}/products/register/validate?${params.toString()}`, {
             method: "GET",
@@ -98,14 +104,19 @@ export class ProductRepository implements IProductRepository {
                 "Authorization": `Bearer ${token}`
             }
         });
+
+        // ✅ エラー(TS2416)の解決策：
+        // インターフェースが期待している戻り値(void)と一致させる
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
             if (errorData.message) {
                 throw new Error(errorData.message);
             }
-            throw new Error("商品名の検証に失敗しました。");
         }
+        // response.ok の場合は何も返さず終了(void)
     }
+
+
     /**
      * 商品を登録する
      * @param product 登録する商品
@@ -139,6 +150,7 @@ export class ProductRepository implements IProductRepository {
         return await response.json();
     }           
 
+
     /**
      * 商品を変更する
      * @param product 変更する商品
@@ -159,10 +171,20 @@ export class ProductRepository implements IProductRepository {
 
         // Statusが200以外の場合
         if (!response.ok) {
-            const errors: ErrorResponse = await response.json();
-            throw new Error(errors.message);
+            const errorData = await response.json().catch(() => ({}));
+            // カスタム例外 (ExistsException 等、messageプロパティがある場合)
+            if (errorData.message) {
+                throw new Error(errorData.message);
+            }
+            // 標準バリデーションエラー (Problem Details形式)
+            if (errorData.errors) {
+                // エラーオブジェクトそのものを保持したカスタムエラーを投げる
+                const validationError = new Error("バリデーションエラーが発生しました。");
+                (validationError as any).serverErrors = errorData.errors; // ここに項目別エラーを格納
+                throw validationError;
+            }
+            throw new Error(errorData.title || "商品の更新に失敗しました。");
         }
-        // 変更後完了後、バックエンドから返却された商品データを返す
         return await response.json();
     }   
 }

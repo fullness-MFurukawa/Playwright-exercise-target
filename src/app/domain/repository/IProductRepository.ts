@@ -27,6 +27,13 @@ export interface IProductRepository {
     existsByName(name: string): Promise<void>;
 
     /**
+     * 商品の重複を検証する
+     * 更新用のシグネチャ（オーバーロード）
+     * @param name 検証する商品名
+     */
+    existsByName(name: string, excludeId: string): Promise<void>;
+
+    /**
      * 商品を登録する
      * @param product 登録する商品
      * @returns 登録された商品（非同期）

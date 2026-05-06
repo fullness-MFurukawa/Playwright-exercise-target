@@ -12,6 +12,14 @@ export interface IUpdateProductService {
      */
     getProductById(id: string): Promise<Product>;
 
+
+    /**
+     * 商品名の重複バリデーション
+     * @param name 検証する名前
+     * @param excludeId (任意) 除外する商品ID
+     */
+    validateProductName(name: string, excludeId?: string): Promise<void>;
+
     /**
      * 商品を変更する
      * @param product 変更商品

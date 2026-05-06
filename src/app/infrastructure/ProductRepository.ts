@@ -60,7 +60,8 @@ export class ProductRepository implements IProductRepository {
         const token = (session as any)?.user?.token;
         // キー名をproductNameに設定する
         const params = new URLSearchParams({ productName: name });
-        const response = await fetch(`/proxy-api/products/register/validate?${params.toString()}`, {
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "/api";
+        const response = await fetch(`${apiBaseUrl}/products/register/validate?${params.toString()}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -82,7 +83,8 @@ export class ProductRepository implements IProductRepository {
     async register(product: ProductRegistration): Promise<Product> {
         const session = await getSession();
         const token = (session as any)?.user?.token;
-        const response = await fetch("/proxy-api/products/register", {
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "/api";
+        const response = await fetch(`${apiBaseUrl}/products/register`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${token}`,

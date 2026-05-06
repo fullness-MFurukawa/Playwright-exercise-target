@@ -22,7 +22,8 @@ export class UserRepository implements IUserRepository {
         // クエリストパラメータを作成する
         const params = new URLSearchParams({ username, email });
         // APIエンドポイントにGETリクエストを送信する
-        const response = await fetch(`/proxy-api/users/register/check?${params.toString()}`, {
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "/api";
+        const response = await fetch(`${apiBaseUrl}/users/register/check?${params.toString()}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`, // JWTトークンを付与する
@@ -67,7 +68,8 @@ export class UserRepository implements IUserRepository {
         const session = await getSession();
         const token = (session as any)?.user?.token;
         // APIエンドポイントにPOSTリクエストを送信する
-        const response = await fetch("/proxy-api/users/register", {
+        const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "/api";
+        const response = await fetch("${apiBaseUrl}/users/register", {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${token}`, // JWTトークンを付与する

@@ -70,7 +70,7 @@ import { SearchProductHooks } from "@/components/hooks/SearchProductHooks";
                     {/* 商品が見つからない場合のメッセージ */} 
                     {products.length === 0 && !isLoading && (
                         <p className="text-center text-muted-foreground py-4">
-                            商品が見つかりません。検索ボタンを押してください。
+                            キーワードを入力して、[検索]ボタンを押してください。
                         </p>
                     )}
 

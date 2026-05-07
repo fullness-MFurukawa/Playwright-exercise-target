@@ -79,6 +79,9 @@ export class ProductRepository implements IProductRepository {
 
         // 成功時は商品リスト(JSON)をパースして返却
         const products: Product[] = await response.json();
+        if (products.length === 0) {
+            throw new Error(`${keyword}を含む商品は、見つかりませんでした。`);
+        }
         return products;
     }
 

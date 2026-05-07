@@ -18,7 +18,7 @@ export const UpdateProductHooks = () => {
         stock: 0
     });
     
-    // --- 修正ポイント1: フィールド別のエラー状態を追加 ---
+    // --- 修正:フィールド別のエラー状態を追加 ---
     const [errors, setErrors] = useState<{ name?: string; price?: string; stock?: string; }>({});
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -36,10 +36,21 @@ export const UpdateProductHooks = () => {
     }, []);
 
     /**
-     * --- 修正ポイント2: 商品名重複のリアルタイム検証 ---
+     * --- 修正: 商品名重複のリアルタイム検証 ---
      */
     const handleNameBlur = useCallback(async () => {
         if (!formData.name.trim()) return;
+
+        // 現在入力されている名前が同じなら、チェック処理をスキップする
+        if (product && formData.name === product.name) {
+            // 元の名前と同じならエラーにする必要がないので、nameエラーを消して終了
+            setErrors(prev => {
+                const newErrors = { ...prev };
+                delete newErrors.name;
+                return newErrors;
+            });
+            return;
+        }
 
         try {
             // 第2引数に現在の商品のUUIDを渡すことで、自分自身を除外してチェック

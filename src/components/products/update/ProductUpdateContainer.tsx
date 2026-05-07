@@ -55,8 +55,10 @@ export const ProductUpdateContainer = () => {
                 <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-lg text-red-900 animate-in fade-in">
                     <AlertCircle className="h-5 w-5 mt-0.5 flex-shrink-0 text-red-600" />
                     <div>
+                        {/*
                         <p className="text-sm font-bold">エラーが発生しました</p>
-                        <p className="text-sm opacity-80 whitespace-pre-line">{error}</p>
+                        */}
+                        <p className="text-sm font-bold opacity-80 whitespace-pre-line">{error}</p>
                     </div>
                 </div>
             )}

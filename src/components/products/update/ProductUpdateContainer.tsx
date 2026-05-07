@@ -8,7 +8,7 @@ import { Loader2, Search, Package, Coins, Hash, AlertCircle, Save, Undo2, CheckC
 
 /**
  * 商品変更機能：統合コンポーネント
- * 検索（Step1と編集（Step 2）の状態を切り替えて表示します。
+ * 検索（Step1と編集（Step 2）の状態を切り替えて表示
  */
 export const ProductUpdateContainer = () => {
     const {

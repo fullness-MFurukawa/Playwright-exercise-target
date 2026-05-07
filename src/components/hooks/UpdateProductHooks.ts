@@ -63,8 +63,10 @@ export const UpdateProductHooks = () => {
                 return newErrors;
             });
         } catch (err: any) {
-            // 重複がある場合やエラーの場合
+            // 個別の赤枠用
             setErrors(prev => ({ ...prev, name: err.message }));
+            // 共通アラート領域にメッセージを表示する
+            setError(err.message);
         }
     }, [formData.name, formData.productId, service]);
 

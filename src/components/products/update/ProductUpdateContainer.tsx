@@ -191,7 +191,7 @@ export const ProductUpdateContainer = () => {
                             <p className="text-sm text-slate-500">商品情報の更新が正常に終了しました。</p>
                         </div>
                         <Button onClick={resetAll} className="w-full">
-                            トップへ戻る
+                            商品検索へ戻る
                         </Button>
                     </div>
                 </div>

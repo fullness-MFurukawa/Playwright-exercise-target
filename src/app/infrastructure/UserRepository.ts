@@ -41,15 +41,13 @@ export class UserRepository implements IUserRepository {
                 const errorData = await response.json();
                 // バリデーションエラー(errorsプロパティが存在する)の場合
                 if (errorData.errors) {
-                    // Object.valuesで配列を取り出し、flat()で1次配列に平坦化し、改行で結合する
-                    const errorMessages = Object.values(errorData.errors).flat().join("\n");
-                    throw new Error(errorMessages);
+                    const validationError = new Error("バリデーションエラーが発生しました。");
+                    (validationError as any).serverErrors = errorData.errors; // 項目別エラーを格納
+                    throw validationError;
                 } 
-                // 単純なエラーメッセージの場合
                 else if (errorData.message) {
                     throw new Error(errorData.message);
                 } 
-                // その他の場合
                 else {
                     throw new Error("入力内容にエラーがあります。");
                 }
@@ -67,9 +65,16 @@ export class UserRepository implements IUserRepository {
         // NextAuthから現在のセッション(ログイン情報)を取得する
         const session = await getSession();
         const token = (session as any)?.user?.token;
+
+
+        // ✅ 追加：ログインしていない（トークンがない）場合は即座にエラーにする
+        if (!session || !token) {
+            throw new Error("権限エラー：ユーザー登録を行うにはログインが必要です。");
+        }
+
         // APIエンドポイントにPOSTリクエストを送信する
         const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "/api";
-        const response = await fetch("${apiBaseUrl}/users/register", {
+        const response = await fetch(`${apiBaseUrl}/users/register`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${token}`, // JWTトークンを付与する
@@ -77,6 +82,8 @@ export class UserRepository implements IUserRepository {
             },
             body: JSON.stringify(user) // UserオブジェクトをJSON文字列に変換して送信する
         });
+        // fetch の直後に追加
+        console.log(`★ステータス: ${response.status}`);
         console.log("★レスポンスの中身:", await response.clone().text());
         switch (response.status) {
             case 200:
@@ -88,15 +95,13 @@ export class UserRepository implements IUserRepository {
                 const errorData = await response.json();
                 // バリデーションエラー(errorsプロパティが存在する)の場合
                 if (errorData.errors) {
-                    // Object.valuesで配列を取り出し、flat()で1次配列に平坦化し、改行で結合する
-                    const errorMessages = Object.values(errorData.errors).flat().join("\n");
-                    throw new Error(errorMessages);
+                    const validationError = new Error("バリデーションエラーが発生しました。");
+                    (validationError as any).serverErrors = errorData.errors; // 項目別エラーを格納
+                    throw validationError;
                 } 
-                // 単純なエラーメッセージの場合
                 else if (errorData.message) {
                     throw new Error(errorData.message);
                 } 
-                // その他の場合
                 else {
                     throw new Error("入力内容にエラーがあります。");
                 }

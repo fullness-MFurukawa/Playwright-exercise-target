@@ -13,6 +13,8 @@ export const RegisterUserHooks = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     // バックエンドから返されたエラーメッセージを保持するState
     const [error, setError] = useState<string | null>(null);
+    // ✅ 追加：各入力欄（Username, Passwordなど）の下に表示する項目別エラーのState
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
     // DIコンテナからユースケース(Service)を取得する
     const registerService = container.get<IRegisterUserService>(TYPES.IRegisterUserService);
@@ -22,6 +24,7 @@ export const RegisterUserHooks = () => {
         // 処理開始時にローディング状態をオンにし、エラー状態をリセットする
         setIsLoading(true);
         setError(null);
+        setErrors({}); // ✅ 処理開始時に項目別エラーもリセットする
         
         try {
             // ユーザーの重複チェックを実行する
@@ -34,8 +37,27 @@ export const RegisterUserHooks = () => {
             return true;
             
         } catch (err: any) {
-            // 処理中に例外が発生した場合(重複やAPIエラーなど)は、エラーメッセージをStateにセットする
-            setError(err.message || "予期せぬエラーが発生しました。");
+            if (err.serverErrors) {
+                const messages: string[] = [];
+                const mappedErrors: { [key: string]: string } = {};
+
+                Object.keys(err.serverErrors).forEach(key => {
+                    // "Username" や "Password" の先頭を小文字にしてマッピング
+                    const fieldName = key.charAt(0).toLowerCase() + key.slice(1);
+                    const fieldMessages = err.serverErrors[key];
+                    
+                    // 各入力欄の下に出す用
+                    mappedErrors[fieldName] = fieldMessages[0];
+                    // 画面上部のアラートに出す用（配列に追加）
+                    messages.push(...fieldMessages);
+                });
+
+                setErrors(mappedErrors);
+                setError(messages.join("\n")); // 複数ある場合は改行で結合
+            } else {
+                // 通常のエラー（重複エラーメッセージや、予期せぬエラーなど）
+                setError(err.message || "予期せぬエラーが発生しました。");
+            }
             return false;
             
         } finally {
@@ -48,6 +70,8 @@ export const RegisterUserHooks = () => {
     return {
         isLoading,  // コンポーネント側でローディング表示やボタン無効化を制御するための状態
         error,      // コンポーネント側でエラーメッセージを表示するための状態
+        errors,     // ✅ 追加：UI側でエラー表示に使う
+        setErrors,  // ✅ 追加：UI側で入力変更時にエラーを消すために必要
         register    // コンポーネント側で登録処理を実行するための関数
     };
 };
